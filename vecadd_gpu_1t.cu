@@ -13,17 +13,14 @@ int main() {
 
     float *x, *y;
     
-    // Allocate Unified Memory accessible from CPU or GPU
     cudaMallocManaged(&x, N*sizeof(float));
     cudaMallocManaged(&y, N*sizeof(float));
 
-    // Initialize arrays
     for (int i = 0; i < N; i++) {
         x[i] = 1.0f;
         y[i] = 2.0f;
     }
 
-    // Run kernel on GPU with 1 thread in 1 block
     add<<<1, 1>>>(N, x, y);
 
     // Wait for GPU to finish
@@ -36,7 +33,7 @@ int main() {
     }
     std::cout << "Max error: " << maxError << std::endl;
 
-    // Free memory
+    // frees
     cudaFree(x);
     cudaFree(y);
 

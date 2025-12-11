@@ -16,17 +16,14 @@ int main() {
 
     float *x, *y;
     
-    // Allocate Unified Memory accessible from CPU or GPU
     cudaMallocManaged(&x, N*sizeof(float));
     cudaMallocManaged(&y, N*sizeof(float));
 
-    // Initialize arrays
     for (int i = 0; i < N; i++) {
         x[i] = 1.0f;
         y[i] = 2.0f;
     }
 
-    // Prefetch data to GPU before kernel launch
     int deviceID = 0;
     cudaMemPrefetchAsync((void *)x, N*sizeof(float), deviceID);
     cudaMemPrefetchAsync((void *)y, N*sizeof(float), deviceID);
@@ -37,7 +34,6 @@ int main() {
     
     std::cout << "Using " << numBlocks << " blocks" << std::endl;
 
-    // Run kernel with many blocks
     add<<<numBlocks, blockSize>>>(N, x, y);
 
     // Wait for GPU to finish
